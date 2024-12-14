@@ -1,0 +1,71 @@
+def bisection_method(f, a, b, epsilon):
+    if f(a) * f(b) > 0:
+        print("The function has the same sign at the endpoints.")
+        return None
+
+    iteration = 0
+    while (b - a) / 2 > epsilon:
+        c = (a + b) / 2
+        if f(c) == 0:
+            return c
+        elif f(a) * f(c) < 0:
+            b = c
+        else:
+            a = c
+        iteration += 1
+    return (a + b) / 2
+
+
+# Function f(x) = x^3 - 6x^2 + 11x - 6
+def f1(x):
+    return x ** 3 - 6 * x ** 2 + 11 * x - 6
+
+
+# Test with [a, b] = [1, 2] and epsilon = 10^-6
+root = bisection_method(f1, 1, 2, 1e-6)
+print(f"Task1: Approximate root: {root}")
+
+
+def golden_section_method(f, a, b, epsilon):
+    golden_ratio = (1 + 5 ** 0.5) / 2  # Golden ratio
+    while (b - a) > epsilon:
+        c1 = b - (b - a) / golden_ratio
+        c2 = a + (b - a) / golden_ratio
+        if f(c1) < f(c2):
+            b = c2
+        else:
+            a = c1
+    xmin = (a + b) / 2
+    return xmin, f(xmin)
+
+
+# Function f(x) = (x - 2)^2 + 3
+def f2(x):
+    return (x - 2) ** 2 + 3
+
+
+# Test with [a, b] = [0, 5] and epsilon = 10^-4
+xmin, fmin = golden_section_method(f2, 0, 5, 1e-4)
+print(f"Task2: Approximate xmin: {xmin}, f(xmin): {fmin}")
+
+
+def gradient_ascent(f_prime, x0, alpha, N):
+    x = x0
+    for i in range(N):
+        x = x + alpha * f_prime(x)
+    return x, f(x)
+
+
+# Function f(x) = -x^2 + 4x + 1
+def f(x):
+    return -x ** 2 + 4 * x + 1
+
+
+# Derivative f'(x) = -2x + 4
+def f_prime(x):
+    return -2 * x + 4
+
+
+# Test with x0 = 0, alpha = 0.1, and N = 100
+xmax, fmax = gradient_ascent(f_prime, 0, 0.1, 100)
+print(f"Task3: Approximate xmax: {xmax}, f(xmax): {fmax}")
